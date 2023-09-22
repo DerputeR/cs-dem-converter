@@ -74,6 +74,9 @@ func set_demofile(scanner *bufio.Scanner) bool {
 		scanner.Scan()
 		demoPath = scanner.Text()
 		demoPath = strings.TrimSpace(demoPath)
+		if demoPath[0] == '"' && demoPath[len(demoPath)-1] == '"' {
+			demoPath = demoPath[1 : len(demoPath)-1]
+		}
 		if demoPath == "" {
 			// fmt.Println("entered: ", demoPath)
 			return false
@@ -106,6 +109,6 @@ func main() {
 	fmt.Println("Welcome to the Demo Parser.")
 
 	if setup_parser(scanner) {
-		fmt.Print("Parsing", demoPath, "with", parserMode, "parser...")
+		fmt.Print("Parsing ", demoPath, " with ", parserMode, " parser...\n")
 	}
 }
