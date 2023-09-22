@@ -2,8 +2,8 @@ package main
 
 import (
 	"bufio"
-	"demo-parser/utils"
 	"demo-parser/dem"
+	"demo-parser/utils"
 	"fmt"
 	"os"
 	"strings"
@@ -15,17 +15,18 @@ var scanner *bufio.Scanner
 
 func set_demofile(scanner *bufio.Scanner) bool {
 	fmt.Println("---")
-	fmt.Println("Enter demo path (enter empty string to go back).")
+	fmt.Println("Enter demo path (enter empty string to exit).")
 
 	var validInput bool = false
 	for !validInput {
 		scanner.Scan()
 		demoPath = scanner.Text()
 		demoPath = strings.TrimSpace(demoPath)
+
 		if demoPath == "" {
-			// fmt.Println("entered: ", demoPath)
 			return false
 		}
+
 		if len(demoPath) > 2 && demoPath[0] == '"' && demoPath[len(demoPath)-1] == '"' {
 			demoPath = demoPath[1 : len(demoPath)-1]
 		}
@@ -39,13 +40,11 @@ func set_demofile(scanner *bufio.Scanner) bool {
 }
 
 func setup_parser(scanner *bufio.Scanner) bool {
-	for {
-		if set_demofile(scanner) {
-			fmt.Println()
-			break
-		}
+	if set_demofile(scanner) {
+		fmt.Println()
+		return true
 	}
-	return true
+	return false
 }
 
 func main() {

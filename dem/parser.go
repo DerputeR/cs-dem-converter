@@ -20,13 +20,13 @@ func LoadDem(demoPath string) {
 	defer p.Close()
 
 	// do an example parse
-	DetailHeader(p, err)
+	DetailHeader(p)
 
 }
 
-func DetailHeader(p dem.Parser, err error) {
+func DetailHeader(p dem.Parser) {
 	var header common.DemoHeader
-	header, err = p.ParseHeader()
+	header, err := p.ParseHeader()
 	if err != nil {
 		log.Panic("failed to parse demo header: ", err)
 	}
