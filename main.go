@@ -2,70 +2,16 @@ package main
 
 import (
 	"bufio"
-	"demo-parser/cs2"
-	"demo-parser/csgo"
 	"demo-parser/utils"
+	"demo-parser/dem"
 	"fmt"
 	"os"
 	"strings"
 	//"strconv"
 )
 
-var parserMode utils.Game = utils.GameNone
 var demoPath string = ""
 var scanner *bufio.Scanner
-
-func set_parser(scanner *bufio.Scanner) bool {
-	fmt.Println("---")
-	fmt.Println("1. Load CS:[g]O demo")
-	fmt.Println("2. Load CS[2] demo")
-	fmt.Println("3. [q]uit")
-
-	var validInput bool = false
-	var gameSelect string
-	for !validInput {
-		scanner.Scan()
-		gameSelect = scanner.Text()
-		gameSelect = strings.ToLower(gameSelect)
-
-		switch gameSelect {
-		case "1":
-			validInput = true
-			parserMode = utils.GameCSGO
-		case "g":
-			validInput = true
-			parserMode = utils.GameCSGO
-		case "csgo":
-			validInput = true
-			parserMode = utils.GameCSGO
-		case "2":
-			validInput = true
-			parserMode = utils.GameCS2
-		case "cs2":
-			validInput = true
-			parserMode = utils.GameCS2
-		case "3":
-			validInput = true
-			parserMode = utils.GameNone
-			return false
-		case "q":
-			validInput = true
-			parserMode = utils.GameNone
-			return false
-		case "quit":
-			validInput = true
-			parserMode = utils.GameNone
-			return false
-		default:
-			validInput = false
-			parserMode = utils.GameNone
-		}
-		if !validInput {
-			fmt.Print("Invalid input, please try again: ")
-		}
-	}
-	return true
-}
 
 func set_demofile(scanner *bufio.Scanner) bool {
 	fmt.Println("---")
@@ -94,9 +40,6 @@ func set_demofile(scanner *bufio.Scanner) bool {
 
 func setup_parser(scanner *bufio.Scanner) bool {
 	for {
-		if !set_parser(scanner) {
-			return false
-		}
 		if set_demofile(scanner) {
 			fmt.Println()
 			break
@@ -112,14 +55,7 @@ func main() {
 	fmt.Println("Welcome to the Demo Parser.")
 
 	if setup_parser(scanner) {
-		fmt.Print("Parsing ", demoPath, " with ", parserMode, " parser...\n")
-		switch parserMode {
-		case utils.GameCSGO:
-			csgo.LoadDem(demoPath)
-		case utils.GameCS2:
-			cs2.LoadDem(demoPath)
-		default:
-			fmt.Println("Unknown configuration, aborting")
-		}
+		fmt.Print("Opening ", demoPath, "\n")
+		dem.LoadDem(demoPath)
 	}
 }
