@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"demo-parser/cs2"
+	"demo-parser/csgo"
 	"demo-parser/utils"
 	"fmt"
 	"os"
@@ -74,13 +76,14 @@ func set_demofile(scanner *bufio.Scanner) bool {
 		scanner.Scan()
 		demoPath = scanner.Text()
 		demoPath = strings.TrimSpace(demoPath)
-		if demoPath[0] == '"' && demoPath[len(demoPath)-1] == '"' {
-			demoPath = demoPath[1 : len(demoPath)-1]
-		}
 		if demoPath == "" {
 			// fmt.Println("entered: ", demoPath)
 			return false
 		}
+		if len(demoPath) > 2 && demoPath[0] == '"' && demoPath[len(demoPath)-1] == '"' {
+			demoPath = demoPath[1 : len(demoPath)-1]
+		}
+
 		validInput = utils.CheckFile(demoPath)
 		if !validInput {
 			fmt.Print("File not found at ", demoPath, ", please try again.\n")
@@ -110,5 +113,13 @@ func main() {
 
 	if setup_parser(scanner) {
 		fmt.Print("Parsing ", demoPath, " with ", parserMode, " parser...\n")
+		switch parserMode {
+		case utils.GameCSGO:
+			csgo.LoadDem(demoPath)
+		case utils.GameCS2:
+			cs2.LoadDem(demoPath)
+		default:
+			fmt.Println("Unknown configuration, aborting")
+		}
 	}
 }

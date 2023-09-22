@@ -1,0 +1,8 @@
+manual gotv records: tv_enable; map de_dust2; gotv_record gotv_test; gotv_stop
+"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\gotv_test.dem"
+"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\test_gotv.dem"
+
+real gotv demos:
+"G:\Games\CS2 Demos\2023-09-07_Ancient_ACEclutch.dem"
+"G:\Games\CSGO Demos\FACEIT\2023\LEAGUE_2023-09-19_Mirage_8-16.dem"
+
