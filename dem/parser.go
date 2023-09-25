@@ -2,8 +2,8 @@ package dem
 
 import (
 	"bufio"
+	"demo-parser/utils"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -13,27 +13,26 @@ import (
 
 func LoadDem(demoPath string) {
 	f, err := os.Open(demoPath)
-	if err != nil {
-		log.Panic("failed to open demo file: ", err)
-	}
+	utils.Check(err, "Failed to open demo file")
 	defer f.Close()
 
 	p := dem.NewParser(f)
 	defer p.Close()
 
 	// do an example parse
-	headerStr := DetailHeader(p)
-	WriteOut(demoPath, headerStr)
+	headerStruct, headerString := DetailHeader(p)
+	WriteOut(demoPath, headerString)
+
+	// now write to JSON
+	ExportToJson(headerStruct, demoPath)
 }
 
-func DetailHeader(p dem.Parser) string {
+func DetailHeader(p dem.Parser) (common.DemoHeader, string) {
 	var header common.DemoHeader
 	header, err := p.ParseHeader()
-	if err != nil {
-		log.Panic("failed to parse demo header: ", err)
-	}
+	utils.Check(err, "Failed to parse demo header")
 	fmt.Println(header)
-	return fmt.Sprintf("%#v", header)
+	return header, fmt.Sprintf("%#v", header)
 }
 
 func WriteOut(path string, contents string) {
@@ -42,18 +41,12 @@ func WriteOut(path string, contents string) {
 	demoName = demoName[:len(demoName)-len(ext)]
 	outputFilepath, err := filepath.Abs("./output/" + demoName + ".txt")
 	outputFile, err := os.Create(outputFilepath)
-	check(err)
+	utils.Check(err, "Failed to create output file")
 	defer outputFile.Close()
 
 	w := bufio.NewWriter(outputFile)
 	bytesOut, err := w.WriteString(contents)
-	check(err)
+	utils.Check(err, "Failed to write to output file")
 	fmt.Printf("wrote %d bytes\n", bytesOut)
 	w.Flush()
-}
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
 }

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"log"
 	"os"
 )
 
@@ -31,4 +32,10 @@ func CheckFile(path string) bool {
 	}
 	f.Close()
 	return true
+}
+
+func Check(e error, errMsg string) {
+	if e != nil {
+		log.Panic(errMsg + ": " + e.Error())
+	}
 }
