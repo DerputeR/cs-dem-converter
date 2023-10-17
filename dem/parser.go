@@ -24,7 +24,9 @@ func LoadDem(demoPath string) {
 	WriteOut(demoPath, headerString)
 
 	// now write to JSON
-	ExportToJson(headerStruct, demoPath)
+	// parse everything
+	allEvents, allEventsString := ParseAll(p)
+	ExportToJson(allEventsString, demoPath)
 }
 
 func DetailHeader(p dem.Parser) (common.DemoHeader, string) {
@@ -33,6 +35,10 @@ func DetailHeader(p dem.Parser) (common.DemoHeader, string) {
 	utils.Check(err, "Failed to parse demo header")
 	fmt.Println(header)
 	return header, fmt.Sprintf("%#v", header)
+}
+
+func ParseAll(p dem.Parser) ([]dem.GameState, string) {
+	
 }
 
 func WriteOut(path string, contents string) {
